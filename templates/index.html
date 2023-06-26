@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html style="text-align: center;background-color: rgb(4, 41, 56); color: rgb(252, 253, 254)">
+<head>
+  <title>Ask your PDF</title>
+</head>
+<body>
+  <h1>Ask your PDF 💬</h1>
+  <form id="pdfForm" enctype="multipart/form-data">
+    <label style="font-style: italic; font-weight: bolder ;font-size:larger;" for="pdf">Upload your PDF:</label>
+    <input type="file" name="pdf" id="pdf">
+    <br><br> <br>
+    <label style="font-style: italic; font-weight: bolder ;font-size: xx-large;" for="question">Ask a question about your PDF:</label>
+    <br>
+    <br>
+    <textarea style="min-width: 40%; min-height: 200px;"  name="question" id="question"></textarea>
+    
+    <br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    const form = document.getElementById('pdfForm');
+    const responseDiv = document.getElementById('response');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      fetch('/api/ask_pdf', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        responseDiv.innerHTML = JSON.stringify(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>
